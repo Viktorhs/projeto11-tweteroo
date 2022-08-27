@@ -22,20 +22,20 @@ const tweets = [
 app.post('/sign-up', (req, res) => {
 
     if(!req.body.username || !req.body.avatar){
-        return res.status(400).send('Todos os campos são obrigatórios!')
+        return res.status(400).send('Todos os campos são obrigatórios!');
     }
 
     users.push(req.body);
-    res.send("Ok");
+    res.status(201).send("OK");
 });
 
 app.post('/tweets', (req, res) => {
     if(!req.body.username || !req.body.tweet){
-        return res.status(400).send('Todos os campos são obrigatórios!')
+        return res.status(400).send('Todos os campos são obrigatórios!');
     }
 
     tweets.push(req.body);
-    res.send("OK")
+    res.status(201).send("OK");
 });
 
 app.get('/tweets', (req, res) => {
@@ -65,5 +65,26 @@ app.get('/tweets', (req, res) => {
 
     res.send(tweetsEnviados)
 });
+
+//Bonus
+
+app.get('/tweets/:username', (req, res) => {
+    const tweetsFiltrados= tweets.filter(item => item.username.toLowerCase() === req.params.username.toLowerCase());
+    const userProfileImg = users.find((item) => item.username.toLowerCase() === req.params.username.toLowerCase());
+    const tweetsUsuario = []
+
+    for(let i = 0 ; i < tweetsFiltrados.length ; i++){
+        const tweetInf = tweetsFiltrados[i];
+
+        tweetsUsuario.push({
+            ...tweetInf,
+            avatar: userProfileImg.avatar
+        })
+
+    }
+
+
+    res.send(tweetsUsuario)
+}),
 
 app.listen(5000, () => console.log('listen on port 5000'));
