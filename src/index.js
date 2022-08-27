@@ -19,12 +19,21 @@ const tweets = [
     }
 ];
 
-app.post('/sing-up', (req, res) => {
+app.post('/sign-up', (req, res) => {
+
+    if(!req.body.username || !req.body.avatar){
+        return res.status(400).send('Todos os campos são obrigatórios!')
+    }
+
     users.push(req.body);
     res.send("Ok");
 });
 
 app.post('/tweets', (req, res) => {
+    if(!req.body.username || !req.body.tweet){
+        return res.status(400).send('Todos os campos são obrigatórios!')
+    }
+
     tweets.push(req.body);
     res.send("OK")
 });
